@@ -211,7 +211,6 @@ I've created constitution.md based on the existing codebase patterns:
 - TypeScript with strict mode for type safety
 - Express.js for API servers
 - PostgreSQL for relational data, Redis for caching
-- Docker containers, Kubernetes orchestration
 
 **Coding Conventions:**
 - Repository pattern for data access
