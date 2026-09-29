@@ -753,7 +753,7 @@ I've created an integration plan for the notification system:
 3. **Email Service:** Extend with `sendTemplatedEmail()` method
 4. **Frontend:** Add NotificationCenter component, integrate with existing layout
 
-**Task Sequencing:**
+**Task Sequencing:** (each phase should define a **testable deliverable** in `plan.md` — script, operator guide, automated check; see SKILL.md *Phased planning and testable deliverables*)
 - Phase 1: Database migrations and models (2 days)
 - Phase 2: Backend notification service (3 days)
 - Phase 3: RabbitMQ integration (2 days)
@@ -790,7 +790,7 @@ C) Address specific risks first
 
 **Purpose**: Break down implementation considering integration
 
-**Enhanced for brownfield**: Tasks include integration steps
+**Enhanced for brownfield**: Tasks include integration steps and, per phase, **testable deliverable packages** (build/run script, `phase-NN.md` operator guide, automated verification). See [Phased planning and testable deliverables](../skill.md#phased-planning-and-testable-deliverables).
 
 **After this step - Summarize tasks.md:**
 
@@ -798,6 +798,7 @@ Follow the same summarization approach as greenfield (see [Greenfield Workflow S
 - Tasks that modify existing code (mark clearly)
 - Integration-specific tasks
 - Testing requirements for integration points
+- Per-phase deliverable tasks and HIL sign-off gates (scripts + operator validation guides)
 
 #### Step 7c: Execute Implementation
 

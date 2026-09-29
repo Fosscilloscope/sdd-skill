@@ -1,7 +1,7 @@
 ---
 name: sdd
 description: This skill should be used when users want guidance on Spec-Driven Development methodology using GitHub's Spec-Kit. Guide users through executable specification workflows for both new projects (greenfield) and existing codebases (brownfield). After any SDD command generates artifacts, automatically provide structured 10-point summaries with feature status tracking, enabling natural language feature management and keeping users engaged throughout the process.
-version: 2.1.0
+version: 2.2.0
 triggers:
   - spec-driven development
   - spec kit
@@ -33,6 +33,10 @@ triggers:
   - reorder features
   - feature progress
   - feature dependencies
+  - phase deliverable
+  - operator validation
+  - human in the loop
+  - testable milestone
 author: Based on GitHub Spec-Kit by Den Delimarsky and John Lam
 license: MIT
 tags:
@@ -59,6 +63,56 @@ Spec-Driven Development emphasizes:
 - **AI-native**: Heavy reliance on advanced AI capabilities
 
 Remember: This is **AI-native development**. Specifications aren't just documentation - they're executable artifacts that directly drive implementation. The AI agent uses them to generate working code that matches the intent defined in the specs.
+
+## Phased planning and testable deliverables
+
+Implementation plans MUST treat each **phase** as a closed loop: work is not complete at “code merged” — it is complete when the phase **deliverable package** is testable and signed off.
+
+### What every phase delivers
+
+When writing or reviewing `plan.md` and `tasks.md` for features that ship software (apps, services, firmware, etc.):
+
+| Part | Typical location | Purpose |
+| --- | --- | --- |
+| **Build/run script** | Project `scripts/` (paths defined in `plan.md`) | One command to build and optionally run the phase artifact; `set -e`; non-zero exit on failure |
+| **Operator validation guide** | `docs/validation/phase-NN.md` (or feature-specific path in `plan.md`) | Human-in-the-loop (HIL): prerequisites, copy-paste commands, **what the operator should see**, short pass/fail checklist — no source diving |
+| **Automated verification** | E2E test, check script, harness exit code | Referenced from the operator guide; must pass before phase gate |
+
+Adapt paths to the repo (monorepo subfolder, spike directory, etc.). Document the canonical paths in `plan.md`.
+
+### Operator guide shape
+
+Each `phase-NN.md` should follow:
+
+1. **Prerequisites** (tools, env vars, installed deps)
+2. **Build and run** (exact commands — usually the script)
+3. **What you should see** (observable behavior)
+4. **Pass checklist** (checkboxes)
+5. **If it fails** (one or two common fixes)
+6. **Sign-off** (operator name/date PASS or FAIL)
+
+Maintain an index (e.g. `docs/validation/README.md`) listing phases, scripts, and status.
+
+### Phase gate rule
+
+A phase advances only when:
+
+1. **Automated** checks for that phase are green (or documented **N/A** in the guide), and  
+2. **Operator** marks the phase checklist **PASS** (HIL), unless the project explicitly marks the phase as automation-only.
+
+### Where this lives in speckit artifacts
+
+| Artifact | Include |
+| --- | --- |
+| **specify.md** | Functional requirement for phase deliverables; success criterion that scripts + guides exist |
+| **plan.md** | “Phase deliverables (strategy)” section; summary table phases → scripts → guides → automation; per-phase **Deliverable** block under each phase |
+| **tasks.md** | Implementation tasks **plus** deliverable tasks (e.g. `D0.1`, `D1.2`); explicit **Human** sign-off rows where HIL applies |
+
+During `/speckit.plan` and `/speckit.tasks`, apply this by default for multi-phase implementation features. Header-only or doc-only features may omit scripts but should still define **how the operator verifies** the outcome.
+
+### Summaries must mention deliverables
+
+After `plan` or `tasks` commands, the 10-point summary MUST call out: number of phases, deliverable paths pattern, and which phases need HIL sign-off.
 
 ## Quick Decision Tree
 
@@ -127,8 +181,8 @@ Works with:
    - Extract key information:
      - **For constitution.md**: Core principles, coding standards, constraints
      - **For spec.md**: Main requirements, user stories, success criteria
-     - **For plan.md**: Tech stack choices, architecture decisions, milestones
-     - **For tasks.md**: Number of tasks, major task categories, dependencies
+     - **For plan.md**: Tech stack choices, architecture decisions, phases, **per-phase deliverable packages** (scripts, operator guides, automated checks)
+     - **For tasks.md**: Number of tasks, major task categories, dependencies, **deliverable (D) tasks** and HIL sign-off gates
      - **For analysis reports**: Current patterns, tech debt, integration points
 
 3. **Present Structured Summary** (Use 10-Point Template Below)

@@ -123,8 +123,8 @@ project-name/
 │   ├── features/
 │   │   └── 001-feature-name/
 │   │       ├── specify.md    # Requirements
-│   │       ├── plan.md       # Technical plan
-│   │       ├── tasks.md      # Task breakdown
+│   │       ├── plan.md       # Technical plan (phased deliverables: scripts, operator guides)
+│   │       ├── tasks.md      # Task breakdown (+ D tasks, HIL sign-off per phase)
 │   │       └── checklist.md  # Quality gates
 │   └── .claude/
 │       └── commands/         # Slash commands

@@ -153,6 +153,8 @@ Read `.speckit/features/[feature-number]/specify.md` and use the **10-point summ
 
 **Purpose**: Provide tech stack and architecture choices
 
+**Planning expectation:** Structure the plan as **numbered phases**. For each phase, define a **testable deliverable package** (see [Phased planning and testable deliverables](../skill.md#phased-planning-and-testable-deliverables) in SKILL.md): build/run script, operator validation guide (`phase-NN.md`), and automated verification. Add a phase summary table and a **Deliverable** subsection under every phase in `plan.md`.
+
 **Example prompt to give user:**
 ```
 /speckit.plan The application uses Vite with minimal number of libraries. Use vanilla HTML, CSS, and JavaScript as much as possible. Images are not uploaded anywhere and metadata is stored in a local SQLite database.
@@ -201,6 +203,8 @@ Read `.speckit/features/[feature-number]/plan.md` and use the **10-point summary
 ```
 
 **Purpose**: Create actionable task list from implementation plan
+
+**Tasking expectation:** Mirror `plan.md` phases. For each phase, include **deliverable tasks** (script, operator guide, automated check) and **Human** sign-off where HIL applies. Phase gates in `tasks.md` must match `plan.md` (automation green + operator PASS).
 
 **After this step - Summarize tasks.md:**
 
@@ -393,8 +397,8 @@ project-name/
 
 1. **constitution.md**: Project-wide principles and guidelines
 2. **specify.md**: Requirements and user stories for current feature
-3. **plan.md**: Technical implementation plan with architecture decisions
-4. **tasks.md**: Task breakdown for implementation
+3. **plan.md**: Technical implementation plan with architecture decisions, phased **deliverable packages** (scripts, operator validation guides, automated gates)
+4. **tasks.md**: Task breakdown for implementation, including deliverable (**D**) tasks per phase
 5. **checklist.md**: Quality validation criteria
 
 ## Workflow Best Practices
@@ -405,7 +409,8 @@ project-name/
 2. **Follow the sequence**: Don't skip steps (constitution → specify → plan → tasks → implement)
 3. **Be specific in specify**: The more detailed your requirements, the better the output
 4. **Review artifacts**: After each step, review the generated artifacts before proceeding
-5. **Use clarify**: Don't hesitate to use `/speckit.clarify` if requirements are unclear
+5. **Phase gates**: Do not start phase N+1 until phase N deliverable script passes and the operator guide checklist is PASS (unless automation-only)
+6. **Use clarify**: Don't hesitate to use `/speckit.clarify` if requirements are unclear
 
 ### For Experienced Users
 

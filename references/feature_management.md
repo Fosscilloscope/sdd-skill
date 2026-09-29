@@ -202,10 +202,10 @@ Each feature automatically tracks its progress through the SDD workflow:
 |-------|----------|------------|-----------|
 | **Not Started** | 0% | No artifacts exist | Run `/speckit.specify` |
 | **Specified** | 20% | `specify.md` exists | Run `/speckit.plan` |
-| **Planned** | 40% | `plan.md` exists | Run `/speckit.tasks` |
-| **Tasked** | 60% | `tasks.md` exists | Run `/speckit.implement` |
-| **In Progress** | 80% | Implementation started | Complete implementation |
-| **Complete** | 100% | Tests pass, feature done | Move to next feature |
+| **Planned** | 40% | `plan.md` exists with phased **deliverable packages** (scripts, operator guides, gates) | Run `/speckit.tasks` |
+| **Tasked** | 60% | `tasks.md` exists with per-phase **D** tasks and HIL sign-offs | Run `/speckit.implement` |
+| **In Progress** | 80% | Implementation started; complete phase deliverables before advancing | Finish current phase gate |
+| **Complete** | 100% | All phase gates PASS; tests pass, feature done | Move to next feature |
 
 ### Status Indicators
 
