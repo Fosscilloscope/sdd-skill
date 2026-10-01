@@ -75,8 +75,9 @@ When writing or reviewing `plan.md` and `tasks.md` for features that ship softwa
 | Part | Typical location | Purpose |
 | --- | --- | --- |
 | **Build/run script** | Project `scripts/` (paths defined in `plan.md`) | One command to build and optionally run the phase artifact; `set -e`; non-zero exit on failure |
-| **Operator validation guide** | `docs/validation/phase-NN.md` (or feature-specific path in `plan.md`) | Human-in-the-loop (HIL): prerequisites, copy-paste commands, **what the operator should see**, short pass/fail checklist — no source diving |
-| **Automated verification** | E2E test, check script, harness exit code | Referenced from the operator guide; must pass before phase gate |
+| **Operator validation guide** | `docs/validation/phase-NN.md` (or feature-specific path in `plan.md`) | Prerequisites, commands, **what the operator should see** — no sign-off in guide files |
+| **Manual confirmation** | `.speckit/features/<id>/confirm.md` | All manual action steps, checklists, PASS/FAIL sign-offs per phase |
+| **Automated verification** | E2E test, check script, harness exit code | Referenced from the operator guide; result noted in `confirm.md` |
 
 Adapt paths to the repo (monorepo subfolder, spike directory, etc.). Document the canonical paths in `plan.md`.
 
@@ -88,25 +89,26 @@ Each `phase-NN.md` should follow:
 2. **Build and run** (exact commands — usually the script)
 3. **What you should see** (observable behavior)
 4. **Pass checklist** (checkboxes)
-5. **If it fails** (one or two common fixes)
-6. **Sign-off** (operator name/date PASS or FAIL)
+4. **If it fails** (one or two common fixes)
+5. Link to feature **`confirm.md`** for checklist and sign-off (do not duplicate in `phase-NN.md`)
 
-Maintain an index (e.g. `docs/validation/README.md`) listing phases, scripts, and status.
+Maintain an index (e.g. `docs/validation/README.md`) listing phases and scripts; **gate status** in `confirm.md`.
 
 ### Phase gate rule
 
 A phase advances only when:
 
-1. **Automated** checks for that phase are green (or documented **N/A** in the guide), and  
-2. **Operator** marks the phase checklist **PASS** (HIL), unless the project explicitly marks the phase as automation-only.
+1. **Automated** checks for that phase are green (or documented **N/A**), and  
+2. The matching section in the feature’s **`confirm.md`** is signed **PASS** (or documented N/A when automation-only).
 
 ### Where this lives in speckit artifacts
 
 | Artifact | Include |
 | --- | --- |
 | **specify.md** | Functional requirement for phase deliverables; success criterion that scripts + guides exist |
-| **plan.md** | “Phase deliverables (strategy)” section; summary table phases → scripts → guides → automation; per-phase **Deliverable** block under each phase |
-| **tasks.md** | Implementation tasks **plus** deliverable tasks (e.g. `D0.1`, `D1.2`); explicit **Human** sign-off rows where HIL applies |
+| **plan.md** | “Phase deliverables (strategy)” section; summary table; per-phase **Deliverable** block; link to `confirm.md` |
+| **confirm.md** | Per-phase manual actions, checklists, sign-off tables (feature directory) |
+| **tasks.md** | Implementation tasks **plus** deliverable tasks; **Human** rows = update `confirm.md` |
 
 During `/speckit.plan` and `/speckit.tasks`, apply this by default for multi-phase implementation features. Header-only or doc-only features may omit scripts but should still define **how the operator verifies** the outcome.
 
